@@ -1,0 +1,580 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+header .nav-links a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+h1 {
+    color: #4CAF50;
+}
+
+.product-section {
+    margin-top: 20px;
+}
+
+.product-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-item {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.product-item h3 {
+    color: #4CAF50;
+}
+
+.product-item p {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Add any other styling as needed */
+.product-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px auto;
+  }
+  
+  .product {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    max-width: 250px;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .buy-now-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .buy-now-btn:hover {
+    background-color: #45a049;
+  }
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Content styles */
+.content {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Add Product Section */
+#add-product {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+#add-product h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.product-form input,
+.product-form textarea,
+.product-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.product-form input[type="file"] {
+    padding: 8px;
+}
+
+.product-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.product-form button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links a {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    #add-product {
+        padding: 20px;
+    }
+
+    #add-product h2 {
+        font-size: 20px;
+    }
+}
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+
+const app = express();
+
+// Set up multer for image upload
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');  // Save images in the 'uploads' folder
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));  // Save with a unique timestamp
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Route for adding product
+app.post('/add-product', upload.single('productImage'), (req, res) => {
+    const { productName, productDescription, productPrice, productQuantity } = req.body;
+    const productImage = req.file ? req.file.filename : null;
+
+    // Check if all fields are present
+    if (!productName || !productDescription || !productPrice || !productQuantity || !productImage) {
+        return res.status(400).send('All fields are required!');
+    }
+
+    // You can now save this product to the database (or handle however you like)
+    // Example: Save product to your database here
+
+    // For demonstration, we're just sending a response back
+    res.send(`Product added successfully: ${productName}, Image: ${productImage}`);
+});
+
+app.listen(3000, () => {
+    console.log('Server started on http://localhost:3000');
+});
+  /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Header */
+header {
+    background-color: #4CAF50;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-links a {
+    margin: 0 15px;
+    color: white;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+.content {
+    padding: 20px;
+    padding-bottom: 80px; /* Space for the View Orders footer */
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+}
+
+/* Section Styles */
+.section {
+    margin-bottom: 30px;
+}
+
+/* Add Product Section */
+#add-product {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#add-product h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-form input, .product-form textarea, .product-form button {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.product-form input[type="file"] {
+    border: none;
+}
+
+.product-form button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.product-form button:hover {
+    background-color: #45a049;
+}
+
+/* Manage Products Section */
+#manage-products {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#manage-products h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.product-item h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-item p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Edit and Delete Buttons Styling */
+.product-item button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.product-item button:hover {
+    background-color: #0056b3;
+}
+
+.product-item .delete-btn {
+    background-color: #dc3545;
+}
+
+.product-item .delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* View Orders Section - Bottom of Page */
+#orders {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 30px; /* Distance from other content */
+    z-index: 10; /* Ensures it's on top of other content */
+}
+
+#orders h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.order-list {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+}
+
+/* Footer Button Styling */
+#orders p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #4CAF50;
+}
+
+#orders .order-list button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#orders .order-list button:hover {
+    background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .product-item {
+        width: 100%;
+    }
+
+    .product-form input, .product-form textarea, .product-form button {
+        width: 100%;
+    }
+
+    /* View Orders Section not fixed on smaller screens */
+    #orders {
+        position: relative;
+        margin-top: 30px;
+    }
+}
+/* View Orders Section - Now scrolls with the page */
+#orders {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px; /* Distance from other content */
+    width: 100%;
+    position: relative; /* Changed from fixed to relative */
+    bottom: auto; /* Ensure it's not fixed at the bottom */
+}
+
+#orders h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.order-list {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+}
+
+/* Footer Button Styling */
+#orders p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #4CAF50;
+}
+
+#orders .order-list button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#orders .order-list button:hover {
+    background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* No need for any change in the view orders section */
+    #orders {
+        position: relative;
+        margin-top: 30px;
+    }
+}

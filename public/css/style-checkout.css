@@ -1,0 +1,156 @@
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Checkout container */
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e8b57; /* Green color */
+}
+
+header .nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+header .nav-links a:hover {
+    color: #2e8b57;
+}
+
+/* Order Summary */
+.checkout-summary {
+    margin-bottom: 30px;
+}
+
+.checkout-summary h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.order-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-summary-table th, .order-summary-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.order-summary-table th {
+    background-color: #2e8b57;
+    color: white;
+}
+
+.order-summary-table td {
+    background-color: #f9f9f9;
+}
+
+/* Billing details */
+.billing-details {
+    margin-bottom: 20px;
+}
+
+.billing-details h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.billing-details form {
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-details label {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.billing-details input, .billing-details textarea, .billing-details select {
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.billing-details textarea {
+    resize: vertical;
+}
+
+.billing-details .checkout-btn {
+    background-color: #2e8b57;
+    color: white;
+    font-size: 18px;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.billing-details .checkout-btn:hover {
+    background-color: #236e47;
+}
+
+.billing-details .checkout-btn:active {
+    background-color: #1e5637;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 15px;
+    }
+
+    .order-summary-table {
+        font-size: 14px;
+    }
+
+    .billing-details input,
+    .billing-details select,
+    .billing-details textarea {
+        font-size: 14px;
+    }
+
+    .billing-details .checkout-btn {
+        font-size: 16px;
+    }
+}

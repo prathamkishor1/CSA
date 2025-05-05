@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - CSA Platform</title>
+    <link rel="stylesheet" href="css/style-checkout.css">
+</head>
+<body>
+    <div class="checkout-container">
+        <header>
+            <div class="logo">CSA Platform</div>
+            <div class="nav-links">
+                <a href="#">Browse Products</a>
+                <a href="#">My Cart</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <h1>Checkout</h1>
+            <div class="checkout-summary">
+                <h2>Order Summary</h2>
+                <table class="order-summary-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-summary-body">
+                        <!-- Product rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="billing-details">
+                <h2>Billing Details</h2>
+                <form id="checkout-form">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="address">Shipping Address</label>
+                    <textarea id="address" name="address" rows="4" required></textarea>
+
+                    <label for="contact">Contact Number</label>
+                    <input type="text" id="contact" name="contact" required>
+
+                    <label for="payment-method">Payment Method</label>
+                    <select id="payment-method" name="payment-method" required>
+                        <option value="credit-card">Credit Card</option>
+                        <option value="debit-card">Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+
+                    <button type="submit" class="checkout-btn">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get cart items from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Render order summary dynamically
+        const orderSummaryBody = document.getElementById('order-summary-body');
+
+        if (cart.length === 0) {
+            orderSummaryBody.innerHTML = `<tr><td colspan="3">Your cart is empty!</td></tr>`;
+        } else {
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.product}</td>
+                    <td>${item.quantity}</td>
+                    <td>₹${item.price * item.quantity}</td>
+                `;
+                orderSummaryBody.appendChild(row);
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const contact = document.getElementById('contact').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            // For now, log order details (can be replaced with actual order placement)
+            console.log({
+                name,
+                address,
+                contact,
+                paymentMethod,
+                cart
+            });
+
+            // Show success alert and redirect to confirmation or payment page
+            alert('Order placed successfully! JAI JAAWAN JAI KISAAN');
+            // You can redirect to the payment page or confirm order here
+        });
+    </script>
+</body>
+</html>
